@@ -19,13 +19,6 @@ const budgetCategories = [
 
 const priorityTasks = [
   {
-    date: "완료 확인",
-    title: "상견례 실제 비용 입력",
-    detail: "7월 12일 부산역 사해방, 11명 식사비 정산",
-    type: "확인",
-    priority: "높음",
-  },
-  {
     date: "7월 28일",
     title: "원규 스튜디오 중도금",
     detail: "30만원 계좌이체, 촬영일은 8월 28일 14:00",
@@ -185,12 +178,12 @@ export default function Home() {
           <article className="metric metric-progress">
             <div className="metric-head">
               <span>전체 진행률</span>
-              <strong>39%</strong>
+              <strong>41%</strong>
             </div>
-            <div className="progress-track" aria-label="전체 진행률 39%">
-              <span style={{ width: "39%" }} />
+            <div className="progress-track" aria-label="전체 진행률 41%">
+              <span style={{ width: "41%" }} />
             </div>
-            <p>56개 중 22개 완료 · 진행중 15 · 미정 19</p>
+            <p>56개 중 23개 완료 · 진행중 14 · 미정 19</p>
           </article>
           <article className="metric">
             <span>본예산 예상</span>
@@ -204,8 +197,8 @@ export default function Home() {
           </article>
           <article className="metric attention">
             <span>높음 미완료</span>
-            <strong>11개</strong>
-            <p>입주·신혼집·혼수 관련 4건 완료 반영</p>
+            <strong>10개</strong>
+            <p>상견례 완료 · 실제 비용 60만원 반영</p>
           </article>
         </div>
 
@@ -264,7 +257,7 @@ export default function Home() {
           </div>
           <div className="budget-summary-inline">
             <span>실제 입력</span>
-            <strong>3,238.8만원</strong>
+            <strong>3,298.8만원</strong>
           </div>
         </div>
 
