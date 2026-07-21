@@ -20,20 +20,6 @@ const budgetCategories = [
 const priorityTasks = [
   {
     date: "완료 확인",
-    title: "입주청소 결과 기록",
-    detail: "하자 사진, 환기, 잔금 34만원 지급 여부 확인",
-    type: "확인",
-    priority: "높음",
-  },
-  {
-    date: "완료 확인",
-    title: "가구·가전·인터넷 설치 정리",
-    detail: "제품 상태, 영수증, 보증서, 인터넷 개통 확인",
-    type: "확인",
-    priority: "높음",
-  },
-  {
-    date: "완료 확인",
     title: "상견례 실제 비용 입력",
     detail: "7월 12일 부산역 사해방, 11명 식사비 정산",
     type: "확인",
@@ -199,12 +185,12 @@ export default function Home() {
           <article className="metric metric-progress">
             <div className="metric-head">
               <span>전체 진행률</span>
-              <strong>32%</strong>
+              <strong>39%</strong>
             </div>
-            <div className="progress-track" aria-label="전체 진행률 32%">
-              <span style={{ width: "32%" }} />
+            <div className="progress-track" aria-label="전체 진행률 39%">
+              <span style={{ width: "39%" }} />
             </div>
-            <p>56개 중 18개 완료 · 진행중 19 · 미정 19</p>
+            <p>56개 중 22개 완료 · 진행중 15 · 미정 19</p>
           </article>
           <article className="metric">
             <span>본예산 예상</span>
@@ -214,12 +200,12 @@ export default function Home() {
           <article className="metric separated">
             <span>집·혼수 별도</span>
             <strong>7억 8,576만원</strong>
-            <p>전세·부대비 7억 6,653만원 · 혼수 1,923만원</p>
+            <p>전세·부대비 7억 6,653만원 · 혼수 1,923만원 · 입주/설치 완료</p>
           </article>
           <article className="metric attention">
             <span>높음 미완료</span>
-            <strong>14개</strong>
-            <p>지난 일정 3건은 완료 여부 확인 필요</p>
+            <strong>11개</strong>
+            <p>입주·신혼집·혼수 관련 4건 완료 반영</p>
           </article>
         </div>
 
@@ -308,7 +294,7 @@ export default function Home() {
                 <span>가구·가전·혼수</span>
                 <strong>1,923.2만원</strong>
               </div>
-              <p>본예산과 합산하지 않고 별도 관리합니다.</p>
+              <p>본예산과 합산하지 않고 별도 관리합니다. 입주와 설치는 모두 완료됐습니다.</p>
             </div>
           </div>
 
