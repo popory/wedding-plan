@@ -32,7 +32,7 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.match(html, /<title>혜린이랑 결혼 준비하기<\/title>/);
   assert.match(html, /더채플앳 청담/);
   assert.match(html, /본예산 예상/);
-  assert.match(html, /오키나와에서 오사카까지/);
+  assert.match(html, /오키나와에서 삿포로까지/);
   assert.match(html, /docs\.google\.com\/spreadsheets/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
 });

@@ -1,111 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import {
+  budgetCategories,
+  dashboardMetrics,
+  honeymoonRoute,
+  priorityTasks,
+  timeline,
+  vendors,
+} from "./generated-data";
 
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/1hLlN5guuiRp_apkWUCCwqe_T0yQVXeAWvxKKWGgoAOg/edit";
-
-const budgetCategories = [
-  { label: "예식장·식사", amount: 24_640_000, color: "coral" },
-  { label: "스드메·기록", amount: 10_460_000, color: "blue" },
-  { label: "신혼여행", amount: 7_500_000, color: "green" },
-  { label: "예물", amount: 5_000_000, color: "gold" },
-  { label: "가족·감사", amount: 4_600_000, color: "plum" },
-  { label: "예비비", amount: 3_500_000, color: "gray" },
-  { label: "청첩장·소품", amount: 1_000_000, color: "mint" },
-  { label: "교통·행정", amount: 1_000_000, color: "navy" },
-  { label: "의상·뷰티", amount: 800_000, color: "pink" },
-];
-
-const priorityTasks = [
-  {
-    date: "7월 28일",
-    title: "원규 스튜디오 중도금",
-    detail: "30만원 계좌이체, 촬영일은 8월 28일 14:00",
-    type: "결제",
-    priority: "높음",
-  },
-  {
-    date: "8월 14일",
-    title: "스튜디오 촬영 옵션 결정",
-    detail: "헬퍼비, 드레스 업그레이드, 한복·야외 촬영 여부",
-    type: "결정",
-    priority: "중간",
-  },
-  {
-    date: "8월 15일",
-    title: "양가 하객 1차 명단",
-    detail: "보증 200명, 예상 220명 기준으로 참석 가능성 정리",
-    type: "결정",
-    priority: "높음",
-  },
-  {
-    date: "8월 31일",
-    title: "신혼여행 항공·숙소 예약",
-    detail: "인천→오키나와→오사카→인천 다구간 비교",
-    type: "예약",
-    priority: "높음",
-  },
-];
-
-const vendors = [
-  {
-    name: "더채플앳 청담",
-    category: "예식장",
-    status: "계약 완료",
-    total: "2,464만원 예상",
-    next: "최종 보증인원 확정 후 잔금 1,810만~1,964만원 정산",
-    date: "2026. 11. 1. 13:00",
-  },
-  {
-    name: "원규 스튜디오",
-    category: "스튜디오",
-    status: "촬영 준비",
-    total: "169만원",
-    next: "7월 28일 중도금 30만원 · 8월 28일 잔금 99만원",
-    date: "2026. 8. 28. 14:00",
-  },
-  {
-    name: "아델라인스냅",
-    category: "본식 스냅",
-    status: "예약 완료",
-    total: "150만원",
-    next: "10월 27일까지 잔금 120만원, 수령 즉시 데이터 백업",
-    date: "대표 + 실장 2인 촬영",
-  },
-  {
-    name: "류필름",
-    category: "본식 영상",
-    status: "촬영 준비",
-    total: "152만원",
-    next: "식순 입력, 후기 이벤트와 잔금 132만원 안내 확인",
-    date: "다큐멘터리 풀스토리형",
-  },
-];
-
-const timeline = [
-  { date: "7.28", title: "원규 중도금 30만원", state: "예정" },
-  { date: "8.14", title: "촬영 옵션·준비 확정", state: "진행중" },
-  { date: "8.15", title: "양가 하객 1차 명단", state: "진행중" },
-  { date: "8.28", title: "원규 스튜디오 촬영", state: "확정" },
-  { date: "8.31", title: "신혼여행 항공·숙소 예약", state: "진행중" },
-  { date: "9.20", title: "청첩장 문구·방향 초안", state: "미정" },
-  { date: "10.18", title: "예식장 최종 미팅·보증 확정", state: "미정" },
-  { date: "11.01", title: "더채플앳 청담 예식", state: "확정" },
-];
-
-const honeymoonRoute = [
-  { date: "11/2", city: "오키나와", plan: "도착 · 체크인", state: "초안" },
-  { date: "11/3", city: "오키나와", plan: "국제거리 · 아메리칸빌리지", state: "초안" },
-  { date: "11/4", city: "오키나와", plan: "츄라우미 · 코우리대교", state: "예약필요" },
-  { date: "11/5", city: "오키나와", plan: "리조트 · 해변 휴식", state: "초안" },
-  { date: "11/6", city: "오사카", plan: "이동 · 도톤보리", state: "예약필요" },
-  { date: "11/7", city: "오사카", plan: "난바 · 우메다", state: "초안" },
-  { date: "11/8", city: "오사카", plan: "USJ 또는 자유일", state: "예약필요" },
-  { date: "11/9", city: "근교", plan: "교토·나라 또는 온천", state: "초안" },
-  { date: "11/10", city: "오사카", plan: "쇼핑 · 마지막 식사", state: "초안" },
-  { date: "11/11", city: "귀국", plan: "오사카 → 한국", state: "확정" },
-];
 
 const numberFormat = new Intl.NumberFormat("ko-KR");
 
@@ -115,6 +21,13 @@ function compactWon(amount: number) {
     return `${eok % 1 === 0 ? eok : eok.toFixed(2)}억원`;
   }
   return `${numberFormat.format(Math.round(amount / 10_000))}만원`;
+}
+
+function expandedWon(amount: number) {
+  const eok = Math.floor(amount / 100_000_000);
+  const man = Math.round((amount % 100_000_000) / 10_000);
+  if (eok === 0) return `${numberFormat.format(man)}만원`;
+  return `${eok}억 ${numberFormat.format(man)}만원`;
 }
 
 function getDDay() {
@@ -127,6 +40,10 @@ function getDDay() {
 export default function Home() {
   const [taskFilter, setTaskFilter] = useState("전체");
   const [dDay] = useState(getDDay);
+  const budgetPercent = Math.min(
+    100,
+    (dashboardMetrics.expectedBudget / dashboardMetrics.targetBudget) * 100,
+  );
 
   const filteredTasks = useMemo(() => {
     if (taskFilter === "전체") return priorityTasks;
@@ -178,27 +95,39 @@ export default function Home() {
           <article className="metric metric-progress">
             <div className="metric-head">
               <span>전체 진행률</span>
-              <strong>41%</strong>
+              <strong>{dashboardMetrics.progress}%</strong>
             </div>
-            <div className="progress-track" aria-label="전체 진행률 41%">
-              <span style={{ width: "41%" }} />
+            <div
+              className="progress-track"
+              aria-label={`전체 진행률 ${dashboardMetrics.progress}%`}
+            >
+              <span style={{ width: `${dashboardMetrics.progress}%` }} />
             </div>
-            <p>56개 중 23개 완료 · 진행중 14 · 미정 19</p>
+            <p>
+              {dashboardMetrics.totalTasks}개 중 {dashboardMetrics.completedTasks}개 완료 · 진행중{" "}
+              {dashboardMetrics.ongoingTasks} · 미정 {dashboardMetrics.undecidedTasks}
+            </p>
           </article>
           <article className="metric">
             <span>본예산 예상</span>
-            <strong>5,850만원</strong>
-            <p>목표 8,000만원 · 예상 잔여 2,150만원</p>
+            <strong>{compactWon(dashboardMetrics.expectedBudget)}</strong>
+            <p>
+              목표 {compactWon(dashboardMetrics.targetBudget)} · 예상 잔여{" "}
+              {compactWon(dashboardMetrics.remainingBudget)}
+            </p>
           </article>
           <article className="metric separated">
             <span>집·혼수 별도</span>
-            <strong>7억 8,576만원</strong>
-            <p>전세·부대비 7억 6,653만원 · 혼수 1,923만원 · 입주/설치 완료</p>
+            <strong>{expandedWon(dashboardMetrics.homeBudget + dashboardMetrics.furnishingsBudget)}</strong>
+            <p>
+              전세·부대비 {expandedWon(dashboardMetrics.homeBudget)} · 혼수{" "}
+              {expandedWon(dashboardMetrics.furnishingsBudget)} · 입주/설치 완료
+            </p>
           </article>
           <article className="metric attention">
             <span>높음 미완료</span>
-            <strong>10개</strong>
-            <p>상견례 완료 · 실제 비용 60만원 반영</p>
+            <strong>{dashboardMetrics.highIncomplete}개</strong>
+            <p>새 체크리스트 반영 · 완료하면 시트에서 바로 갱신</p>
           </article>
         </div>
 
@@ -218,7 +147,7 @@ export default function Home() {
               <p className="eyebrow">지금 챙길 것</p>
               <h2>우선순위</h2>
             </div>
-            <span className="updated">시트 확인 2026. 7. 21.</span>
+            <span className="updated">시트 확인 {dashboardMetrics.updatedAt}</span>
           </div>
           <div className="filter-row" aria-label="우선순위 필터">
             {["전체", "높음", "확인", "결제", "결정", "예약"].map((filter) => (
@@ -253,11 +182,11 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">본예산</p>
-            <h2>5,850만원 안에서 준비 중</h2>
+            <h2>{compactWon(dashboardMetrics.expectedBudget)} 안에서 준비 중</h2>
           </div>
           <div className="budget-summary-inline">
             <span>실제 입력</span>
-            <strong>3,298.8만원</strong>
+            <strong>{compactWon(dashboardMetrics.actualBudget)}</strong>
           </div>
         </div>
 
@@ -266,26 +195,32 @@ export default function Home() {
             <div className="budget-scale">
               <div>
                 <span>예상</span>
-                <strong>5,850만원</strong>
+                <strong>{compactWon(dashboardMetrics.expectedBudget)}</strong>
               </div>
               <div>
                 <span>목표</span>
-                <strong>8,000만원</strong>
+                <strong>{compactWon(dashboardMetrics.targetBudget)}</strong>
               </div>
             </div>
-            <div className="budget-track" aria-label="목표 예산 대비 예상 예산 73%">
-              <span style={{ width: "73.125%" }} />
+            <div
+              className="budget-track"
+              aria-label={`목표 예산 대비 예상 예산 ${Math.round(budgetPercent)}%`}
+            >
+              <span style={{ width: `${budgetPercent}%` }} />
             </div>
-            <p className="budget-note">예상 기준으로 목표의 73% 사용 · 2,150만원 여유</p>
+            <p className="budget-note">
+              예상 기준으로 목표의 {Math.round(budgetPercent)}% 사용 ·{" "}
+              {compactWon(dashboardMetrics.remainingBudget)} 여유
+            </p>
 
             <div className="separate-budget">
               <div>
                 <span>인덕원 전세·부대비</span>
-                <strong>7억 6,653만원</strong>
+                <strong>{expandedWon(dashboardMetrics.homeBudget)}</strong>
               </div>
               <div>
                 <span>가구·가전·혼수</span>
-                <strong>1,923.2만원</strong>
+                <strong>{expandedWon(dashboardMetrics.furnishingsBudget)}</strong>
               </div>
               <p>본예산과 합산하지 않고 별도 관리합니다. 입주와 설치는 모두 완료됐습니다.</p>
             </div>
@@ -301,7 +236,9 @@ export default function Home() {
                 <div className="category-track">
                   <span
                     className={`bar-${category.color}`}
-                    style={{ width: `${Math.max(4, (category.amount / 24_640_000) * 100)}%` }}
+                    style={{
+                      width: `${Math.max(4, (category.amount / Math.max(...budgetCategories.map((item) => item.amount))) * 100)}%`,
+                    }}
                   />
                 </div>
               </div>
@@ -317,7 +254,7 @@ export default function Home() {
               <p className="eyebrow">계약과 결제</p>
               <h2>확정 업체</h2>
             </div>
-            <span className="section-stat">4개 업체 관리 중</span>
+            <span className="section-stat">{vendors.length}개 업체 관리 중</span>
           </div>
           <div className="vendor-grid">
             {vendors.map((vendor) => (
@@ -339,7 +276,7 @@ export default function Home() {
       <section className="page-shell content-section" id="schedule">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">앞으로 103일</p>
+            <p className="eyebrow">예식까지 {dDay}</p>
             <h2>주요 일정</h2>
           </div>
           <span className="section-stat">예식 후 11월 2일 출국</span>
@@ -364,7 +301,7 @@ export default function Home() {
           <div className="honeymoon-heading">
             <div>
               <p className="eyebrow">9박 10일</p>
-              <h2>오키나와에서 오사카까지</h2>
+              <h2>오키나와에서 삿포로까지</h2>
               <p>2026년 11월 2일 출발 · 11월 11일 귀국</p>
             </div>
             <div className="honeymoon-budget">
@@ -389,7 +326,7 @@ export default function Home() {
 
           <div className="trip-checks">
             <span>8월 31일까지</span>
-            <strong>다구간 항공 · 오키나와/오사카 숙소 후보 확정</strong>
+            <strong>다구간 항공 · 오키나와/삿포로 숙소 후보 확정</strong>
             <p>여권 영문명과 유효기간은 항공권 결제 전에 먼저 확인합니다.</p>
           </div>
         </div>
@@ -399,7 +336,7 @@ export default function Home() {
         <div className="page-shell footer-inner">
           <div>
             <strong>혜린이랑 결혼 준비하기</strong>
-            <p>Google Sheets 내용을 2026년 7월 21일 기준으로 정리한 보기 전용 사이트입니다.</p>
+            <p>Google Sheets 내용을 {dashboardMetrics.updatedAt} 기준으로 정리한 보기 전용 사이트입니다.</p>
           </div>
           <a href={SHEET_URL} target="_blank" rel="noreferrer">
             시트에서 수정하기
