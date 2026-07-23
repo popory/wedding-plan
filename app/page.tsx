@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import {
   budgetCategories,
   dashboardMetrics,
+  honeymoonBookings,
   honeymoonRoute,
   priorityTasks,
   timeline,
@@ -310,6 +311,34 @@ export default function Home() {
               <small>항공·숙소 500 · 현지비 250</small>
             </div>
           </div>
+
+          {honeymoonBookings.length > 0 && (
+            <section className="booking-summary" aria-labelledby="honeymoon-bookings">
+              <div className="booking-summary-heading">
+                <p className="eyebrow">확정 예약</p>
+                <h3 id="honeymoon-bookings">예약한 항공과 숙소</h3>
+              </div>
+              <div className="booking-grid">
+                {honeymoonBookings.map((booking) => (
+                  <article className="booking-card" key={`${booking.kind}-${booking.title}`}>
+                    <div className="booking-card-meta">
+                      <span>{booking.kind}</span>
+                      <time>{booking.date}</time>
+                    </div>
+                    <h4>{booking.title}</h4>
+                    <dl>
+                      {booking.details.map((detail) => (
+                        <div key={detail.label}>
+                          <dt>{detail.label}</dt>
+                          <dd>{detail.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
           <div className="trip-route">
             {honeymoonRoute.map((day) => (

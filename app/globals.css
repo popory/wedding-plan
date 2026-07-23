@@ -820,6 +820,89 @@ h1 {
   font-size: 22px;
 }
 
+.booking-summary {
+  margin: 30px 0;
+}
+
+.booking-summary-heading {
+  margin-bottom: 14px;
+}
+
+.booking-summary-heading .eyebrow {
+  margin: 0 0 5px;
+  color: #f19a83;
+}
+
+.booking-summary-heading h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.booking-card {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.045);
+  padding: 20px;
+}
+
+.booking-card-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  color: #b9c4c1;
+  font-size: 11px;
+}
+
+.booking-card-meta span {
+  color: #f19a83;
+  font-weight: 800;
+}
+
+.booking-card-meta time {
+  text-align: right;
+}
+
+.booking-card h4 {
+  margin: 10px 0 16px;
+  color: #fff3cf;
+  font-size: 16px;
+}
+
+.booking-card dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.booking-card dl > div {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.booking-card dt {
+  color: #9fb1ac;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.booking-card dd {
+  min-width: 0;
+  margin: 0;
+  color: #f6f8f7;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .trip-route {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1152,6 +1235,23 @@ footer {
 
   .honeymoon-budget {
     justify-items: start;
+  }
+
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-card {
+    padding: 16px;
+  }
+
+  .booking-card-meta {
+    display: grid;
+    gap: 4px;
+  }
+
+  .booking-card-meta time {
+    text-align: left;
   }
 
   .trip-route {
