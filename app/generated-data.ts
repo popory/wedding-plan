@@ -1,5 +1,5 @@
 export const dashboardMetrics = {
-  "updatedAt": "2026. 7. 21.",
+  "updatedAt": "2026. 7. 23.",
   "progress": 34,
   "totalTasks": 68,
   "completedTasks": 23,
@@ -175,8 +175,8 @@ export const honeymoonRoute = [
   {
     "date": "11/2",
     "city": "오키나와",
-    "plan": "인천 출발 → 오키나와 도착 → 체크인",
-    "state": "초안"
+    "plan": "인천 11:30 출발 → 오키나와 14:00 도착 → 체크인",
+    "state": "확정"
   },
   {
     "date": "11/3",
