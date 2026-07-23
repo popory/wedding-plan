@@ -171,6 +171,59 @@ export const timeline = [
   }
 ];
 
+export const honeymoonBookings = [
+  {
+    "kind": "항공편",
+    "date": "2026년 11월 2일",
+    "title": "인천(ICN) → 오키나와(OKA)",
+    "details": [
+      {
+        "label": "시간",
+        "value": "11:30 출발 · 14:00 도착"
+      },
+      {
+        "label": "운항",
+        "value": "이스타항공 ZE0631"
+      },
+      {
+        "label": "좌석",
+        "value": "일반석 Q"
+      },
+      {
+        "label": "수하물",
+        "value": "15kg"
+      }
+    ]
+  },
+  {
+    "kind": "숙소",
+    "date": "2026년 11월 5일 - 11월 7일 · 2박",
+    "title": "할레쿨라니 오키나와",
+    "details": [
+      {
+        "label": "객실",
+        "value": "디럭스 오션뷰 선셋윙 킹룸"
+      },
+      {
+        "label": "인원",
+        "value": "성인 2명"
+      },
+      {
+        "label": "포함",
+        "value": "조식 · Wi-Fi"
+      },
+      {
+        "label": "취소",
+        "value": "2026년 10월 28일 전 무료"
+      },
+      {
+        "label": "안내",
+        "value": "현지 세금 별도 부과 가능"
+      }
+    ]
+  }
+];
+
 export const honeymoonRoute = [
   {
     "date": "11/2",

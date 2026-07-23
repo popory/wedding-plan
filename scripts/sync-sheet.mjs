@@ -1,6 +1,8 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
+import { parseHoneymoonBookings } from "./honeymoon-bookings.mjs";
+
 const spreadsheetId = "1hLlN5guuiRp_apkWUCCwqe_T0yQVXeAWvxKKWGgoAOg";
 const outputPath = resolve("app/generated-data.ts");
 
@@ -103,7 +105,7 @@ const [checklist, budget, venue, studio, snap, video, honeymoon] = await Promise
   fetchRange("스튜디오", "A17:F21"),
   fetchRange("본식스냅", "A18:F20"),
   fetchRange("본식영상", "A10:F14"),
-  fetchRange("신혼여행", "A25:F34"),
+  fetchRange("신혼여행", "A25:F41"),
 ]);
 
 const summary = checklist[0] ?? [];
@@ -196,6 +198,8 @@ const timeline = tasks.slice(0, 7).map((task) => ({
 }));
 timeline.push({ date: "11.01", title: "더채플앳 청담 예식", state: "확정" });
 
+const honeymoonBookings = parseHoneymoonBookings(honeymoon);
+
 const honeymoonRoute = honeymoon
   .filter((row) => row[0] && row[2])
   .map((row) => {
@@ -216,6 +220,7 @@ const output = [
   serialize("priorityTasks", priorityTasks),
   serialize("vendors", vendors),
   serialize("timeline", timeline),
+  serialize("honeymoonBookings", honeymoonBookings),
   serialize("honeymoonRoute", honeymoonRoute),
 ].join("\n");
 
