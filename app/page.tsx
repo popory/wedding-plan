@@ -7,6 +7,8 @@ import {
   honeymoonBookings,
   honeymoonRoute,
   priorityTasks,
+  studioExtras,
+  studioPlan,
   timeline,
   vendors,
 } from "./generated-data";
@@ -18,6 +20,7 @@ const NAV = [
   { href: "#tasks", label: "할 일" },
   { href: "#budget", label: "예산" },
   { href: "#vendors", label: "계약" },
+  { href: "#studio-options", label: "촬영옵션" },
   { href: "#schedule", label: "일정" },
   { href: "#honeymoon", label: "신혼여행" },
 ];
@@ -191,7 +194,7 @@ export default function Home() {
 
           <div className="next-focus">
             <div>
-              <span className="tag tag-onDark">가장 가까운 결제</span>
+              <span className="tag tag-onDark">다음 우선 일정</span>
               <strong>
                 {nextTask ? `${nextTask.date} · ${nextTask.title}` : "현재 예정된 우선 일정이 없습니다"}
               </strong>
@@ -314,6 +317,44 @@ export default function Home() {
                 </div>
                 <div className="vendor-cost">{vendor.total}</div>
                 <p className="vendor-next">{vendor.next}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel" id="studio-options">
+          <div className="panel-head">
+            <div>
+              <h2>원규 추가비용</h2>
+              <p>선택 여부는 시트 체크박스와 상태값으로 관리합니다.</p>
+            </div>
+            <span className="panel-note">헬퍼비 외 항목은 선택 옵션</span>
+          </div>
+
+          <div className="studio-plan">
+            <div>
+              <span>의상 상담</span>
+              <strong>{studioPlan.visit} · {studioPlan.vendor}</strong>
+              <p>{studioPlan.detail}</p>
+            </div>
+            <div className="studio-plan-actions">
+              <span>{studioPlan.budget}</span>
+              <a href={studioPlan.url} target="_blank" rel="noreferrer">
+                렌탈센터 보기
+              </a>
+            </div>
+          </div>
+
+          <div className="studio-extra-list">
+            {studioExtras.map((extra) => (
+              <article className="studio-extra-row" key={extra.item}>
+                <span className={`extra-kind extra-kind-${extra.kind}`}>{extra.kind}</span>
+                <div className="studio-extra-copy">
+                  <strong>{extra.item}</strong>
+                  <p>{extra.note}</p>
+                </div>
+                <strong className="studio-extra-price">{extra.price}</strong>
+                <span className={`pill pill-${extra.status}`}>{extra.status}</span>
               </article>
             ))}
           </div>

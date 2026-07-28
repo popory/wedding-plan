@@ -98,11 +98,13 @@ function serialize(name, value) {
   return `export const ${name} = ${JSON.stringify(value, null, 2)};\n`;
 }
 
-const [checklist, budget, venue, studio, snap, video, honeymoon] = await Promise.all([
+const [checklist, budget, venue, studio, studioExtrasSource, suitRentalBudget, snap, video, honeymoon] = await Promise.all([
   fetchRange("전체체크리스트", "A3:L120"),
   fetchRange("결혼예산", "A2:L4"),
   fetchRange("예식장", "A12:C19"),
   fetchRange("스튜디오", "A17:F21"),
+  fetchRange("스튜디오", "A49:F57"),
+  fetchRange("결혼예산", "A17:L17"),
   fetchRange("본식스냅", "A18:F20"),
   fetchRange("본식영상", "A10:F14"),
   fetchRange("신혼여행", "A25:F41"),
@@ -170,7 +172,7 @@ const vendors = [
     category: "스튜디오",
     status: "촬영 준비",
     total: compactWon(won(studioTotal)),
-    next: "촬영 의상·포트폴리오·소품 준비 후 8/28 중도금2 결제",
+    next: "8/2 슈트패브릭 의상 상담 후 포트폴리오·소품 준비",
     date: "2026. 8. 28. 14:00",
   },
   {
@@ -190,6 +192,26 @@ const vendors = [
     date: "다큐멘터리 풀스토리형",
   },
 ];
+
+const suitRentalTask = checklist.find((row) => row[3] === "슈트패브릭 렌탈센터 방문 상담") ?? [];
+const suitRentalRow = suitRentalBudget[0] ?? [];
+const studioPlan = {
+  vendor: "슈트패브릭 렌탈센터",
+  visit: suitRentalTask[7] || "2026-08-02 14:00",
+  detail: suitRentalTask[8] || "본식 턱시도와 스튜디오 촬영용 의상을 함께 상담합니다.",
+  budget: `${compactWon(won(suitRentalRow[2]))} 임시예산`,
+  url: "https://xn--sm2b21oe3m6la.com/default/",
+};
+
+const studioExtras = studioExtrasSource
+  .filter((row) => row[0] === "별도비용" || row[0] === "추가선택")
+  .map((row) => ({
+    kind: row[0] === "별도비용" ? "필수" : "선택",
+    item: row[1] ?? "",
+    price: row[2] ?? "",
+    status: row[3] ?? "미정",
+    note: row[4] ?? "",
+  }));
 
 const timeline = tasks.slice(0, 7).map((task) => ({
   date: task.deadline.short,
@@ -219,6 +241,8 @@ const output = [
   serialize("budgetCategories", budgetCategories),
   serialize("priorityTasks", priorityTasks),
   serialize("vendors", vendors),
+  serialize("studioPlan", studioPlan),
+  serialize("studioExtras", studioExtras),
   serialize("timeline", timeline),
   serialize("honeymoonBookings", honeymoonBookings),
   serialize("honeymoonRoute", honeymoonRoute),

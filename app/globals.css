@@ -838,6 +838,127 @@ dd {
   text-wrap: pretty;
 }
 
+.studio-plan {
+  display: flex;
+  min-width: 0;
+  margin-top: 22px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 20px 0;
+}
+
+.studio-plan > div:first-child {
+  min-width: 0;
+}
+
+.studio-plan > div:first-child > span {
+  color: var(--indigo);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.studio-plan strong {
+  display: block;
+  margin-top: 7px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.studio-plan p {
+  max-width: 760px;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.studio-plan-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.studio-plan-actions > span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.studio-plan-actions a {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  border: 1px solid #cfd6e1;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0 14px;
+}
+
+.studio-plan-actions a:hover,
+.studio-plan-actions a:focus-visible {
+  border-color: var(--indigo);
+  color: var(--indigo);
+}
+
+.studio-extra-list {
+  margin-top: 4px;
+}
+
+.studio-extra-row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 54px minmax(0, 1fr) minmax(150px, auto) auto;
+  align-items: center;
+  gap: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  padding: 17px 0;
+}
+
+.extra-kind {
+  color: var(--muted-2);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.extra-kind-필수 {
+  color: var(--pink-ink);
+}
+
+.studio-extra-copy {
+  min-width: 0;
+}
+
+.studio-extra-copy strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.studio-extra-copy p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.studio-extra-price {
+  color: var(--indigo-deep);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.studio-extra-row .pill {
+  margin-left: 0;
+}
+
 .timeline-row time {
   flex: 0 0 62px;
   color: var(--indigo);
@@ -1257,6 +1378,32 @@ dd {
 
   .vendor-card {
     min-height: 230px;
+  }
+
+  .studio-plan {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .studio-plan-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .studio-extra-row {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px 12px;
+  }
+
+  .studio-extra-price {
+    grid-column: 2;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .studio-extra-row .pill {
+    grid-column: 2;
+    justify-self: start;
   }
 
   .timeline-row time {
