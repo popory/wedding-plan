@@ -1,14 +1,14 @@
 export const dashboardMetrics = {
   "updatedAt": "2026. 7. 28.",
-  "progress": 34,
+  "progress": 35,
   "totalTasks": 68,
-  "completedTasks": 23,
-  "ongoingTasks": 14,
+  "completedTasks": 24,
+  "ongoingTasks": 13,
   "undecidedTasks": 31,
   "expectedBudget": 58778000,
   "actualBudget": 32988000,
   "remainingBudget": 21222000,
-  "highIncomplete": 22,
+  "highIncomplete": 21,
   "targetBudget": 80000000,
   "homeBudget": 766530000,
   "furnishingsBudget": 19232000
@@ -71,13 +71,6 @@ export const priorityTasks = [
     "priority": "중간"
   },
   {
-    "date": "7월 29일",
-    "title": "원규 스튜디오 중도금 30만원 입금",
-    "detail": "촬영·결제 안내 기준 중도금 300,000원 계좌이체 후 담당자에게 입금일·입금자명 전달",
-    "type": "결제",
-    "priority": "높음"
-  },
-  {
     "date": "8월 10일",
     "title": "모바일·종이 청첩장 문구/디자인/수량 확정",
     "detail": "양가 문구 톤, 인쇄 수량, 봉투 표기, 모바일 공개 정보와 발송 대상 확정",
@@ -90,6 +83,13 @@ export const priorityTasks = [
     "detail": "기본 블랙 턱시도 외 추가 대여는 제휴업체 사전예약·방문 필요(1벌당 25만원~). 일반 넥타이·정장구두·발목 긴 검정양말 준비",
     "type": "예약",
     "priority": "중간"
+  },
+  {
+    "date": "8월 14일",
+    "title": "원규 촬영 신부 드레스 선택/업그레이드 확정",
+    "detail": "스튜디오에서 5벌 피팅 후 화이트 드레스 3벌 선택. 외부 드레스 촬영 불가, 추가/프리미엄 드레스·헤어피스 각 11만원, 헤어변형 5.5만원",
+    "type": "결정",
+    "priority": "높음"
   }
 ];
 
@@ -107,7 +107,7 @@ export const vendors = [
     "category": "스튜디오",
     "status": "촬영 준비",
     "total": "169만원",
-    "next": "중도금과 촬영 의상·포트폴리오·소품 준비",
+    "next": "촬영 의상·포트폴리오·소품 준비 후 8/28 중도금2 결제",
     "date": "2026. 8. 28. 14:00"
   },
   {
@@ -135,11 +135,6 @@ export const timeline = [
     "state": "진행중"
   },
   {
-    "date": "7.29",
-    "title": "원규 스튜디오 중도금 30만원 입금",
-    "state": "진행중"
-  },
-  {
     "date": "8.10",
     "title": "모바일·종이 청첩장 문구/디자인/수량 확정",
     "state": "미정"
@@ -162,6 +157,11 @@ export const timeline = [
   {
     "date": "8.15",
     "title": "양가 명단 1차 작성",
+    "state": "미정"
+  },
+  {
+    "date": "8.21",
+    "title": "원규 촬영 소품·기념일 날짜·케이크 준비",
     "state": "미정"
   },
   {

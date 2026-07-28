@@ -170,7 +170,7 @@ const vendors = [
     category: "스튜디오",
     status: "촬영 준비",
     total: compactWon(won(studioTotal)),
-    next: "중도금과 촬영 의상·포트폴리오·소품 준비",
+    next: "촬영 의상·포트폴리오·소품 준비 후 8/28 중도금2 결제",
     date: "2026. 8. 28. 14:00",
   },
   {

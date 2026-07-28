@@ -33,7 +33,9 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.match(html, /class="overview"/);
   assert.match(html, /class="category-grid"/);
   assert.match(html, /class="vendor-grid"/);
-  assert.match(html, /7월 29일/);
+  assert.match(html, /8월 14일/);
+  assert.doesNotMatch(html, /7월 29일/);
+  assert.doesNotMatch(html, /원규 스튜디오 중도금 30만원 입금/);
   assert.match(html, /원규 스튜디오/);
   assert.match(html, /<title>혜린이랑 결혼 준비하기<\/title>/);
   assert.match(html, /더채플앳 청담/);
