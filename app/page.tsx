@@ -14,6 +14,15 @@ import {
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/1hLlN5guuiRp_apkWUCCwqe_T0yQVXeAWvxKKWGgoAOg/edit";
 
+const NAV = [
+  { href: "#tasks", label: "할 일" },
+  { href: "#budget", label: "예산" },
+  { href: "#vendors", label: "계약" },
+  { href: "#schedule", label: "일정" },
+  { href: "#honeymoon", label: "신혼여행" },
+];
+
+const FILTERS = ["전체", "높음", "확인", "결제", "결정", "예약"];
 const numberFormat = new Intl.NumberFormat("ko-KR");
 
 function compactWon(amount: number) {
@@ -22,6 +31,12 @@ function compactWon(amount: number) {
     return `${eok % 1 === 0 ? eok : eok.toFixed(2)}억원`;
   }
   return `${numberFormat.format(Math.round(amount / 10_000))}만원`;
+}
+
+function splitAmount(amount: number) {
+  const text = compactWon(amount);
+  const match = text.match(/^([\d,.]+)(.*)$/);
+  return match ? { value: match[1], unit: match[2] } : { value: text, unit: "" };
 }
 
 function expandedWon(amount: number) {
@@ -33,18 +48,26 @@ function expandedWon(amount: number) {
 
 function getDDay() {
   const wedding = new Date("2026-11-01T13:00:00+09:00").getTime();
-  const now = Date.now();
-  const days = Math.ceil((wedding - now) / 86_400_000);
+  const days = Math.ceil((wedding - Date.now()) / 86_400_000);
   return days >= 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 }
 
 export default function Home() {
   const [taskFilter, setTaskFilter] = useState("전체");
   const [dDay] = useState(getDDay);
-  const budgetPercent = Math.min(
-    100,
-    (dashboardMetrics.expectedBudget / dashboardMetrics.targetBudget) * 100,
-  );
+
+  const budgetPercent =
+    dashboardMetrics.targetBudget > 0
+      ? Math.round(
+          Math.min(
+            100,
+            (dashboardMetrics.expectedBudget / dashboardMetrics.targetBudget) * 100,
+          ),
+        )
+      : 0;
+  const separateTotal = dashboardMetrics.homeBudget + dashboardMetrics.furnishingsBudget;
+  const categoryTotal = budgetCategories.reduce((sum, item) => sum + item.amount, 0);
+  const nextTask = priorityTasks.find((task) => task.type === "결제") ?? priorityTasks[0];
 
   const filteredTasks = useMemo(() => {
     if (taskFilter === "전체") return priorityTasks;
@@ -54,254 +77,269 @@ export default function Home() {
     return priorityTasks.filter((task) => task.type === taskFilter);
   }, [taskFilter]);
 
+  const expected = splitAmount(dashboardMetrics.expectedBudget);
+  const separate = splitAmount(separateTotal);
+
   return (
-    <main>
+    <>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="#overview" aria-label="요약으로 이동">
-            <span className="brand-mark">S · H</span>
+          <a className="brand" href="#top" aria-label="요약으로 이동">
+            <span className="brand-mark">SH</span>
             <span className="brand-copy">
               <strong>혜린이랑 결혼 준비하기</strong>
               <small>2026. 11. 01 · 더채플앳 청담</small>
             </span>
           </a>
-          <a className="sheet-link" href={SHEET_URL} target="_blank" rel="noreferrer">
-            원본 시트 열기
-          </a>
+          <nav className="topnav" aria-label="화면 섹션">
+            {NAV.map((item) => (
+              <a key={item.href} href={item.href}>
+                {item.label}
+              </a>
+            ))}
+            <a className="sheet-link" href={SHEET_URL} target="_blank" rel="noreferrer">
+              시트 열기
+            </a>
+          </nav>
         </div>
-        <nav className="section-nav" aria-label="화면 섹션">
-          <a href="#overview">요약</a>
-          <a href="#tasks">할 일</a>
-          <a href="#budget">예산</a>
-          <a href="#vendors">계약</a>
-          <a href="#schedule">일정</a>
-          <a href="#honeymoon">신혼여행</a>
-        </nav>
       </header>
 
-      <section className="overview page-shell" id="overview">
-        <div className="wedding-summary">
-          <div>
-            <p className="eyebrow">우리의 결혼식</p>
-            <h1>더채플앳 청담</h1>
-            <p className="wedding-meta">2026년 11월 1일 일요일 오후 1시 · 6층 채플홀</p>
-          </div>
-          <div className="dday-block">
-            <span>{dDay}</span>
-            <small>보증 200명 · 예상 220명</small>
-          </div>
-        </div>
-
-        <div className="metrics-grid">
-          <article className="metric metric-progress">
-            <div className="metric-head">
-              <span>전체 진행률</span>
-              <strong>{dashboardMetrics.progress}%</strong>
+      <main className="shell">
+        <section className="overview" id="top">
+          <div className="hero">
+            <div>
+              <span className="tag tag-indigo">OUR WEDDING</span>
+              <h1>더채플앳 청담</h1>
+              <p className="hero-meta">
+                2026년 11월 1일 일요일 오후 1시 · 6층 채플홀 · 보증 200명
+              </p>
             </div>
-            <div
-              className="progress-track"
-              aria-label={`전체 진행률 ${dashboardMetrics.progress}%`}
-            >
-              <span style={{ width: `${dashboardMetrics.progress}%` }} />
+            <div className="hero-dday">
+              <strong>{dDay}</strong>
+              <small>시트 확인 {dashboardMetrics.updatedAt}</small>
+            </div>
+          </div>
+
+          <article className="stat">
+            <div className="stat-head">
+              <span>전체 진행률</span>
+              <span className="tag tag-green">진행중 {dashboardMetrics.ongoingTasks}</span>
+            </div>
+            <div className="stat-value">
+              {dashboardMetrics.progress}
+              <em>%</em>
+            </div>
+            <div className="meter" aria-label={`전체 진행률 ${dashboardMetrics.progress}%`}>
+              <span className="fill-green" style={{ width: `${dashboardMetrics.progress}%` }} />
             </div>
             <p>
-              {dashboardMetrics.totalTasks}개 중 {dashboardMetrics.completedTasks}개 완료 · 진행중{" "}
-              {dashboardMetrics.ongoingTasks} · 미정 {dashboardMetrics.undecidedTasks}
+              {dashboardMetrics.totalTasks}개 중 {dashboardMetrics.completedTasks}개 완료 · 미정{" "}
+              {dashboardMetrics.undecidedTasks}
             </p>
           </article>
-          <article className="metric">
-            <span>본예산 예상</span>
-            <strong>{compactWon(dashboardMetrics.expectedBudget)}</strong>
+
+          <article className="stat">
+            <div className="stat-head">
+              <span>본예산 예상</span>
+              <span className="tag tag-indigo">목표의 {budgetPercent}%</span>
+            </div>
+            <div className="stat-value">
+              {expected.value}
+              <em>{expected.unit}</em>
+            </div>
+            <div className="meter" aria-label={`목표 예산 대비 예상 예산 ${budgetPercent}%`}>
+              <span className="fill-indigo" style={{ width: `${budgetPercent}%` }} />
+            </div>
             <p>
-              목표 {compactWon(dashboardMetrics.targetBudget)} · 예상 잔여{" "}
+              목표 {compactWon(dashboardMetrics.targetBudget)} · 여유{" "}
               {compactWon(dashboardMetrics.remainingBudget)}
             </p>
           </article>
-          <article className="metric separated">
-            <span>집·혼수 별도</span>
-            <strong>{expandedWon(dashboardMetrics.homeBudget + dashboardMetrics.furnishingsBudget)}</strong>
+
+          <article className="stat">
+            <div className="stat-head">
+              <span>집·혼수 별도</span>
+              <span className="tag tag-gray">입주 완료</span>
+            </div>
+            <div className="stat-value">
+              {separate.value}
+              <em>{separate.unit}</em>
+            </div>
+            <div className="meter" aria-label="신혼집과 혼수 준비 완료">
+              <span className="fill-gray" style={{ width: "100%" }} />
+            </div>
             <p>
-              전세·부대비 {expandedWon(dashboardMetrics.homeBudget)} · 혼수{" "}
-              {expandedWon(dashboardMetrics.furnishingsBudget)} · 입주/설치 완료
+              전세 {expandedWon(dashboardMetrics.homeBudget)} · 혼수{" "}
+              {expandedWon(dashboardMetrics.furnishingsBudget)}
             </p>
           </article>
-          <article className="metric attention">
-            <span>높음 미완료</span>
-            <strong>{dashboardMetrics.highIncomplete}개</strong>
-            <p>새 체크리스트 반영 · 완료하면 시트에서 바로 갱신</p>
+
+          <article className="stat">
+            <div className="stat-head">
+              <span>높음 미완료</span>
+              <span className="tag tag-pink">우선 처리</span>
+            </div>
+            <div className="stat-value accent-pink">
+              {dashboardMetrics.highIncomplete}
+              <em>개</em>
+            </div>
+            <div className="meter" aria-label={`높음 우선순위 ${dashboardMetrics.highIncomplete}개`}>
+              <span className="fill-pink" style={{ width: "66%" }} />
+            </div>
+            <p>완료하면 시트에서 바로 갱신됩니다.</p>
           </article>
-        </div>
 
-        <div className="next-focus">
-          <div>
-            <span className="focus-label">가장 가까운 결제</span>
-            <strong>7월 28일 · 원규 스튜디오 중도금 30만원</strong>
-          </div>
-          <a href="#tasks">우선순위 보기</a>
-        </div>
-      </section>
-
-      <section className="section-band" id="tasks">
-        <div className="page-shell">
-          <div className="section-heading">
+          <div className="next-focus">
             <div>
-              <p className="eyebrow">지금 챙길 것</p>
-              <h2>우선순위</h2>
+              <span className="tag tag-onDark">가장 가까운 결제</span>
+              <strong>
+                {nextTask ? `${nextTask.date} · ${nextTask.title}` : "현재 예정된 우선 일정이 없습니다"}
+              </strong>
             </div>
-            <span className="updated">시트 확인 {dashboardMetrics.updatedAt}</span>
+            {nextTask && <a href="#tasks">우선순위 보기</a>}
           </div>
-          <div className="filter-row" aria-label="우선순위 필터">
-            {["전체", "높음", "확인", "결제", "결정", "예약"].map((filter) => (
-              <button
-                type="button"
-                key={filter}
-                className={taskFilter === filter ? "active" : ""}
-                onClick={() => setTaskFilter(filter)}
-              >
-                {filter}
-              </button>
+        </section>
+
+        <section className="panel" id="tasks">
+          <div className="panel-head">
+            <div>
+              <h2>지금 챙길 것</h2>
+              <p>우선순위 높은 항목부터 정리했습니다.</p>
+            </div>
+            <div className="filter-row" aria-label="우선순위 필터">
+              {FILTERS.map((filter) => (
+                <button
+                  type="button"
+                  key={filter}
+                  className={taskFilter === filter ? "active" : ""}
+                  aria-pressed={taskFilter === filter}
+                  onClick={() => setTaskFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="rows">
+            {filteredTasks.length === 0 ? (
+              <p className="empty-state">해당 조건의 할 일이 없습니다.</p>
+            ) : (
+              filteredTasks.map((task) => (
+                <article className="row task-row" key={task.title}>
+                  <div className="task-when">
+                    <strong>{task.date}</strong>
+                    <small>{task.priority} 우선</small>
+                  </div>
+                  <div className="task-copy">
+                    <strong>{task.title}</strong>
+                    <p>{task.detail}</p>
+                  </div>
+                  <span className={`pill pill-${task.type}`}>{task.type}</span>
+                </article>
+              ))
+            )}
+          </div>
+        </section>
+
+        <section className="panel" id="budget">
+          <div className="panel-head">
+            <div>
+              <h2>예산</h2>
+              <p>
+                예상 {compactWon(dashboardMetrics.expectedBudget)} · 실제 입력{" "}
+                {compactWon(dashboardMetrics.actualBudget)}
+              </p>
+            </div>
+            <div className="panel-figure">
+              <span>목표</span>
+              <strong>{compactWon(dashboardMetrics.targetBudget)}</strong>
+            </div>
+          </div>
+
+          <div className="stack" aria-label={`예상 예산 카테고리 구성, 목표의 ${budgetPercent}%`}>
+            {budgetCategories.map((category) => (
+              <div
+                key={category.label}
+                title={category.label}
+                className={`bar-${category.color}`}
+                style={{ flexBasis: `${categoryTotal > 0 ? (category.amount / categoryTotal) * 100 : 0}%` }}
+              />
             ))}
           </div>
-          <div className="task-list">
-            {filteredTasks.map((task) => (
-              <article className="task-row" key={task.title}>
-                <div className={`task-date ${task.date === "완료 확인" ? "overdue" : ""}`}>
-                  {task.date}
-                </div>
-                <div className="task-copy">
-                  <strong>{task.title}</strong>
-                  <p>{task.detail}</p>
-                </div>
-                <span className={`status-pill status-${task.type}`}>{task.type}</span>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="page-shell content-section" id="budget">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">본예산</p>
-            <h2>{compactWon(dashboardMetrics.expectedBudget)} 안에서 준비 중</h2>
-          </div>
-          <div className="budget-summary-inline">
-            <span>실제 입력</span>
-            <strong>{compactWon(dashboardMetrics.actualBudget)}</strong>
-          </div>
-        </div>
-
-        <div className="budget-layout">
-          <div className="budget-visual">
-            <div className="budget-scale">
-              <div>
-                <span>예상</span>
-                <strong>{compactWon(dashboardMetrics.expectedBudget)}</strong>
-              </div>
-              <div>
-                <span>목표</span>
-                <strong>{compactWon(dashboardMetrics.targetBudget)}</strong>
-              </div>
-            </div>
-            <div
-              className="budget-track"
-              aria-label={`목표 예산 대비 예상 예산 ${Math.round(budgetPercent)}%`}
-            >
-              <span style={{ width: `${budgetPercent}%` }} />
-            </div>
-            <p className="budget-note">
-              예상 기준으로 목표의 {Math.round(budgetPercent)}% 사용 ·{" "}
-              {compactWon(dashboardMetrics.remainingBudget)} 여유
-            </p>
-
-            <div className="separate-budget">
-              <div>
-                <span>인덕원 전세·부대비</span>
-                <strong>{expandedWon(dashboardMetrics.homeBudget)}</strong>
-              </div>
-              <div>
-                <span>가구·가전·혼수</span>
-                <strong>{expandedWon(dashboardMetrics.furnishingsBudget)}</strong>
-              </div>
-              <p>본예산과 합산하지 않고 별도 관리합니다. 입주와 설치는 모두 완료됐습니다.</p>
-            </div>
+          <div className="stack-legend">
+            <span>
+              예상 합계 {compactWon(dashboardMetrics.expectedBudget)} · 목표의 {budgetPercent}% 사용
+            </span>
+            <span>{compactWon(dashboardMetrics.remainingBudget)} 여유</span>
           </div>
 
-          <div className="category-list">
+          <div className="category-grid">
             {budgetCategories.map((category) => (
               <div className="category-row" key={category.label}>
-                <div className="category-copy">
-                  <span>{category.label}</span>
-                  <strong>{compactWon(category.amount)}</strong>
-                </div>
-                <div className="category-track">
-                  <span
-                    className={`bar-${category.color}`}
-                    style={{
-                      width: `${Math.max(4, (category.amount / Math.max(...budgetCategories.map((item) => item.amount))) * 100)}%`,
-                    }}
-                  />
-                </div>
+                <span className={`dot bar-${category.color}`} />
+                <span className="category-label">{category.label}</span>
+                <span className="category-amount">{compactWon(category.amount)}</span>
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      <section className="section-band" id="vendors">
-        <div className="page-shell">
-          <div className="section-heading">
+          <div className="separate-budget">
             <div>
-              <p className="eyebrow">계약과 결제</p>
-              <h2>확정 업체</h2>
+              <span>인덕원 전세·부대비</span>
+              <strong>{expandedWon(dashboardMetrics.homeBudget)}</strong>
             </div>
-            <span className="section-stat">{vendors.length}개 업체 관리 중</span>
+            <div>
+              <span>가구·가전·혼수</span>
+              <strong>{expandedWon(dashboardMetrics.furnishingsBudget)}</strong>
+            </div>
+            <p>본예산과 합산하지 않고 별도 관리합니다. 입주와 설치는 모두 완료됐습니다.</p>
+          </div>
+        </section>
+
+        <section className="group" id="vendors">
+          <div className="group-head">
+            <h2>확정 업체</h2>
+            <span>{vendors.length}개 업체 관리 중</span>
           </div>
           <div className="vendor-grid">
             {vendors.map((vendor) => (
               <article className="vendor-card" key={vendor.name}>
                 <div className="vendor-top">
                   <span>{vendor.category}</span>
-                  <span className="vendor-status">{vendor.status}</span>
+                  <span className="pill pill-green">{vendor.status}</span>
                 </div>
-                <h3>{vendor.name}</h3>
-                <p className="vendor-date">{vendor.date}</p>
+                <div>
+                  <h3>{vendor.name}</h3>
+                  <p className="vendor-date">{vendor.date}</p>
+                </div>
                 <div className="vendor-cost">{vendor.total}</div>
                 <p className="vendor-next">{vendor.next}</p>
               </article>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="page-shell content-section" id="schedule">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">예식까지 {dDay}</p>
+        <section className="panel" id="schedule">
+          <div className="panel-head">
             <h2>주요 일정</h2>
+            <span className="panel-note">예식까지 {dDay} · 11월 2일 출국</span>
           </div>
-          <span className="section-stat">예식 후 11월 2일 출국</span>
-        </div>
-        <div className="timeline">
-          {timeline.map((item, index) => (
-            <article className="timeline-item" key={`${item.date}-${item.title}`}>
-              <div className="timeline-marker">
-                <span />
-                {index < timeline.length - 1 && <i />}
-              </div>
-              <time>{item.date}</time>
-              <strong>{item.title}</strong>
-              <span className={`timeline-state state-${item.state}`}>{item.state}</span>
-            </article>
-          ))}
-        </div>
-      </section>
+          <div className="rows">
+            {timeline.map((item) => (
+              <article className="row timeline-row" key={`${item.date}-${item.title}`}>
+                <time>{item.date}</time>
+                <span className={`node node-${item.state}`} />
+                <strong>{item.title}</strong>
+                <span className={`pill pill-${item.state}`}>{item.state}</span>
+              </article>
+            ))}
+          </div>
+        </section>
 
-      <section className="honeymoon-section" id="honeymoon">
-        <div className="page-shell">
-          <div className="honeymoon-heading">
+        <section className="group" id="honeymoon">
+          <div className="honeymoon-hero">
             <div>
-              <p className="eyebrow">9박 10일</p>
+              <span className="tag tag-white">9박 10일</span>
               <h2>오키나와에서 삿포로까지</h2>
               <p>2026년 11월 2일 출발 · 11월 11일 귀국</p>
             </div>
@@ -313,19 +351,19 @@ export default function Home() {
           </div>
 
           {honeymoonBookings.length > 0 && (
-            <section className="booking-summary" aria-labelledby="honeymoon-bookings">
-              <div className="booking-summary-heading">
-                <p className="eyebrow">확정 예약</p>
-                <h3 id="honeymoon-bookings">예약한 항공과 숙소</h3>
+            <section className="booking-section" aria-labelledby="confirmed-bookings">
+              <div className="booking-section-head">
+                <span>확정 예약</span>
+                <h3 id="confirmed-bookings">예약한 항공과 숙소</h3>
               </div>
               <div className="booking-grid">
                 {honeymoonBookings.map((booking) => (
                   <article className="booking-card" key={`${booking.kind}-${booking.title}`}>
-                    <div className="booking-card-meta">
-                      <span>{booking.kind}</span>
+                    <div className="booking-top">
+                      <span className="tag tag-indigo">{booking.kind}</span>
                       <time>{booking.date}</time>
                     </div>
-                    <h4>{booking.title}</h4>
+                    <h3>{booking.title}</h3>
                     <dl>
                       {booking.details.map((detail) => (
                         <div key={detail.label}>
@@ -340,29 +378,30 @@ export default function Home() {
             </section>
           )}
 
-          <div className="trip-route">
-            {honeymoonRoute.map((day) => (
-              <article className="trip-day" key={day.date}>
-                <time>{day.date}</time>
-                <div>
-                  <span>{day.city}</span>
+          <div className="panel">
+            <h3 className="route-title">일별 루트</h3>
+            <div className="rows">
+              {honeymoonRoute.map((day) => (
+                <article className="row route-row" key={day.date}>
+                  <time>{day.date}</time>
+                  <span className="route-city">{day.city}</span>
                   <strong>{day.plan}</strong>
-                </div>
-                <em className={day.state === "예약필요" ? "needs-booking" : ""}>{day.state}</em>
-              </article>
-            ))}
+                  <span className={`pill pill-${day.state}`}>{day.state}</span>
+                </article>
+              ))}
+            </div>
           </div>
 
           <div className="trip-checks">
-            <span>8월 31일까지</span>
-            <strong>다구간 항공 · 오키나와/삿포로 숙소 후보 확정</strong>
-            <p>여권 영문명과 유효기간은 항공권 결제 전에 먼저 확인합니다.</p>
+            <span className="tag tag-pinkSolid">8월 31일까지</span>
+            <div>
+              <strong>전 구간 항공 · 오키나와/삿포로 숙소 후보 확정</strong>
+              <p>여권 영문명과 유효기간은 항공권 결제 전에 먼저 확인합니다.</p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <footer>
-        <div className="page-shell footer-inner">
+        <footer className="site-footer">
           <div>
             <strong>혜린이랑 결혼 준비하기</strong>
             <p>Google Sheets 내용을 {dashboardMetrics.updatedAt} 기준으로 정리한 보기 전용 사이트입니다.</p>
@@ -370,8 +409,8 @@ export default function Home() {
           <a href={SHEET_URL} target="_blank" rel="noreferrer">
             시트에서 수정하기
           </a>
-        </div>
-      </footer>
-    </main>
+        </footer>
+      </main>
+    </>
   );
 }

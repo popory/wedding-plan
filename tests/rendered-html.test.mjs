@@ -61,7 +61,7 @@ test("스타터 자산을 제거하고 공유 이미지를 포함한다", async 
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /const nextTask = priorityTasks\[0\]/);
+  assert.match(page, /const nextTask = priorityTasks\.find/);
   assert.match(page, /filteredTasks\.length === 0/);
   assert.doesNotMatch(page, /7월 28일/);
   assert.match(page, /혜린이랑 결혼 준비하기/);
