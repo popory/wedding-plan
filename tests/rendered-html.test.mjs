@@ -29,6 +29,12 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
+  assert.match(html, /class="topbar"/);
+  assert.match(html, /class="overview"/);
+  assert.match(html, /class="category-grid"/);
+  assert.match(html, /class="vendor-grid"/);
+  assert.match(html, /7월 29일/);
+  assert.match(html, /원규 스튜디오/);
   assert.match(html, /<title>혜린이랑 결혼 준비하기<\/title>/);
   assert.match(html, /더채플앳 청담/);
   assert.match(html, /본예산 예상/);
@@ -55,6 +61,9 @@ test("스타터 자산을 제거하고 공유 이미지를 포함한다", async 
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
+  assert.match(page, /const nextTask = priorityTasks\[0\]/);
+  assert.match(page, /filteredTasks\.length === 0/);
+  assert.doesNotMatch(page, /7월 28일/);
   assert.match(page, /혜린이랑 결혼 준비하기/);
   assert.match(layout, /\/og\.png/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
