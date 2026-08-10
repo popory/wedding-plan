@@ -333,7 +333,7 @@ export default function Home() {
 
           <div className="studio-plan">
             <div>
-              <span>의상 상담</span>
+              <span>의상 계약</span>
               <strong>{studioPlan.visit} · {studioPlan.vendor}</strong>
               <p>{studioPlan.detail}</p>
             </div>

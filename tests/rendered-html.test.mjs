@@ -39,6 +39,10 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.doesNotMatch(html, /원규 스튜디오 중도금 30만원 입금/);
   assert.match(html, /원규 스튜디오/);
   assert.match(html, /슈트패브릭 렌탈센터/);
+  assert.match(html, /라이트 베이지/);
+  assert.match(html, /프리미엄 블랙 피크드 턱시도/);
+  assert.match(html, /8\/29 20:00 반납/);
+  assert.match(html, /11\/1 20:00 반납/);
   assert.match(html, /xn--sm2b21oe3m6la\.com/);
   assert.match(html, /원규 추가비용/);
   assert.match(html, /₩55,000 \/ 1회/);

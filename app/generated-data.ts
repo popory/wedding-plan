@@ -1,14 +1,14 @@
 export const dashboardMetrics = {
   "updatedAt": "2026. 8. 10.",
-  "progress": 31,
+  "progress": 36,
   "totalTasks": 78,
-  "completedTasks": 24,
-  "ongoingTasks": 17,
-  "undecidedTasks": 37,
+  "completedTasks": 28,
+  "ongoingTasks": 14,
+  "undecidedTasks": 36,
   "expectedBudget": 60778000,
   "actualBudget": 32988000,
   "remainingBudget": 19222000,
-  "highIncomplete": 26,
+  "highIncomplete": 23,
   "targetBudget": 80000000,
   "homeBudget": 766530000,
   "furnishingsBudget": 19232000
@@ -107,7 +107,7 @@ export const vendors = [
     "category": "스튜디오",
     "status": "촬영 준비",
     "total": "169만원",
-    "next": "슈트패브릭 방문 결과 확인 후 8/14 드레스·포트폴리오·촬영 옵션 확정",
+    "next": "슈트패브릭 촬영·본식 의상 계약 완료, 8/14 드레스·포트폴리오·촬영 옵션 확정",
     "date": "2026. 8. 28. 14:00"
   },
   {
@@ -130,8 +130,8 @@ export const vendors = [
 
 export const studioPlan = {
   "vendor": "슈트패브릭 렌탈센터",
-  "visit": "즉시 결과 확인",
-  "detail": "8/2 방문 일정 경과. 방문 여부, 스탠다드/프리미엄 선택, 본식·촬영 패키지 총 견적과 수선·픽업·반납 일정을 확인",
+  "visit": "촬영복 8/28 · 본식복 10/31",
+  "detail": "촬영복: 라이트 베이지 재킷·바지·베스트, 다크 스트라이프 더블 재킷·바지. 셔츠 105·구두 270 대여, 바지 수선 메모 / 본식복: 프리미엄 블랙 피크드 턱시도, 프리미엄 블랙 바지, P15 버튼 포켓 베스트. 셔츠 105·구두 270 대여, 본식 바지 수선 메모",
   "budget": "130만원 임시예산",
   "url": "https://xn--sm2b21oe3m6la.com/default/"
 };
@@ -185,13 +185,6 @@ export const studioExtras = [
     "price": "₩110,000~₩220,000",
     "status": "미정",
     "note": "한복 구성에 따라 금액 차등"
-  },
-  {
-    "kind": "선택",
-    "item": "가족 기념촬영",
-    "price": "기준 인원 외 1인당 ₩110,000",
-    "status": "미정",
-    "note": "추가 인원 의상·메이크업은 별도 준비"
   }
 ];
 
@@ -230,6 +223,16 @@ export const timeline = [
     "date": "8.14",
     "title": "원규 드레스 추가·프리미엄(벌당 11만원) 선택 여부 확정",
     "state": "미정"
+  },
+  {
+    "date": "08.28",
+    "title": "슈트패브릭 촬영복 대여 · 8/29 20:00 반납",
+    "state": "확정"
+  },
+  {
+    "date": "10.31",
+    "title": "슈트패브릭 본식복 대여 · 11/1 20:00 반납",
+    "state": "확정"
   },
   {
     "date": "11.01",
