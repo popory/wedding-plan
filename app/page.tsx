@@ -385,9 +385,9 @@ export default function Home() {
               <p>2026년 11월 2일 출발 · 11월 11일 귀국</p>
             </div>
             <div className="honeymoon-budget">
-              <span>임시 예산</span>
-              <strong>750만원</strong>
-              <small>항공·숙소 500 · 현지비 250</small>
+              <span>확정 예산</span>
+              <strong>950만원</strong>
+              <small>항공·숙소 500 · 현지비 50만엔(450만원)</small>
             </div>
           </div>
 

@@ -172,7 +172,7 @@ const vendors = [
     category: "스튜디오",
     status: "촬영 준비",
     total: compactWon(won(studioTotal)),
-    next: "8/2 슈트패브릭 의상 상담 후 포트폴리오·소품 준비",
+    next: "슈트패브릭 방문 결과 확인 후 8/14 드레스·포트폴리오·촬영 옵션 확정",
     date: "2026. 8. 28. 14:00",
   },
   {
