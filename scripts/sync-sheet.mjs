@@ -98,12 +98,13 @@ function serialize(name, value) {
   return `export const ${name} = ${JSON.stringify(value, null, 2)};\n`;
 }
 
-const [checklist, budget, venue, studio, studioExtrasSource, suitRentalBudget, suitRentalDetails, snap, video, honeymoon] = await Promise.all([
+const [checklist, budget, venue, studio, studioExtrasSource, studioPrepSource, suitRentalBudget, suitRentalDetails, snap, video, honeymoon] = await Promise.all([
   fetchRange("전체체크리스트", "A3:L120"),
   fetchRange("결혼예산", "A2:L4"),
   fetchRange("예식장", "A12:C19"),
   fetchRange("스튜디오", "A17:F21"),
-  fetchRange("스튜디오", "A49:F57"),
+  fetchRange("스튜디오", "A50:F58"),
+  fetchRange("스튜디오", "A59:F64"),
   fetchRange("결혼예산", "A17:L17"),
   fetchRange("스튜디오", "A36:F37"),
   fetchRange("본식스냅", "A18:F20"),
@@ -216,6 +217,15 @@ const studioExtras = studioExtrasSource
     note: row[4] ?? "",
   }));
 
+const studioPrep = studioPrepSource
+  .filter((row) => ["준비물", "당일준비", "주의"].includes(row[0]))
+  .map((row) => ({
+    audience: row[1] ?? "공통",
+    item: row[2] ?? "",
+    status: row[3] ?? "미정",
+    note: row[4] ?? "",
+  }));
+
 const timeline = tasks.slice(0, 7).map((task) => ({
   date: task.deadline.short,
   title: task.title,
@@ -248,6 +258,7 @@ const output = [
   serialize("vendors", vendors),
   serialize("studioPlan", studioPlan),
   serialize("studioExtras", studioExtras),
+  serialize("studioPrep", studioPrep),
   serialize("timeline", timeline),
   serialize("honeymoonBookings", honeymoonBookings),
   serialize("honeymoonRoute", honeymoonRoute),

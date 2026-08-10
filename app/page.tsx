@@ -9,6 +9,7 @@ import {
   priorityTasks,
   studioExtras,
   studioPlan,
+  studioPrep,
   timeline,
   vendors,
 } from "./generated-data";
@@ -357,6 +358,22 @@ export default function Home() {
                 <span className={`pill pill-${extra.status}`}>{extra.status}</span>
               </article>
             ))}
+          </div>
+
+          <div className="studio-prep">
+            <h3>촬영 전 준비</h3>
+            <div className="studio-prep-list">
+              {studioPrep.map((prep) => (
+                <article className="studio-prep-row" key={prep.audience}>
+                  <strong>{prep.audience}</strong>
+                  <div>
+                    <p>{prep.item}</p>
+                    <small>{prep.note}</small>
+                  </div>
+                  <span className={`pill pill-${prep.status}`}>{prep.status}</span>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
