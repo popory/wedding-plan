@@ -48,7 +48,9 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.match(html, /₩55,000 \/ 1회/);
   assert.match(html, /야간 로드씬/);
   assert.match(html, /촬영 전 준비/);
-  assert.match(html, /아이크림·선크림 금지/);
+  assert.match(html, /11:45 메이크업 시작/);
+  assert.match(html, /깊은 V넥 흰색 반팔티/);
+  assert.match(html, /드레스·턱시도 불가/);
   assert.match(html, /30~16일 전 44만원/);
   assert.match(html, /<title>혜린이랑 결혼 준비하기<\/title>/);
   assert.match(html, /더채플앳 청담/);
@@ -63,7 +65,7 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.match(html, /현지 세금 별도 부과 가능/);
   assert.doesNotMatch(
     html,
-    /1745872244|Booking ID|예약번호|투숙객|탑승객|Visa|Mastercard|카드번호|140-012-488113|\.pdf|C:\\Users/,
+    /1745872244|Booking ID|예약번호|투숙객|탑승객|Visa|Mastercard|카드번호|140-012-488113|070-4673-6808|영동대로118길 66|\.pdf|C:\\Users/,
   );
   assert.match(html, /docs\.google\.com\/spreadsheets/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);

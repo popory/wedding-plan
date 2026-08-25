@@ -174,8 +174,8 @@ const vendors = [
     category: "스튜디오",
     status: "촬영 준비",
     total: compactWon(won(studioTotal)),
-    next: "슈트패브릭 촬영·본식 의상 계약 완료, 8/14 드레스·포트폴리오·촬영 옵션 확정",
-    date: "2026. 8. 28. 14:00",
+    next: "8/28 11:45 메이크업 시작, 당일 준비물·개별 의상·결제수단 최종 확인",
+    date: "2026. 8. 28. 11:45 H/M · 14:00 촬영",
   },
   {
     name: "아델라인스냅",
@@ -265,4 +265,4 @@ const output = [
 ].join("\n");
 
 await mkdir(dirname(outputPath), { recursive: true });
-await writeFile(outputPath, output.replace(/\r\n/g, "\n"), "utf8");
+await writeFile(outputPath, output.replace(/\n/g, "\n"), "utf8");
