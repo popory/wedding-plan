@@ -172,10 +172,10 @@ const vendors = [
   {
     name: "원규 스튜디오",
     category: "스튜디오",
-    status: "촬영 준비",
+    status: "촬영 완료",
     total: compactWon(won(studioTotal)),
-    next: "8/28 11:45 메이크업 시작, 당일 준비물·개별 의상·결제수단 최종 확인",
-    date: "2026. 8. 28. 11:45 H/M · 14:00 촬영",
+    next: "9/4부터 사진 셀렉 예약, 선수정 9컷·대표사진 선택 후 파일 2중 백업",
+    date: "2026. 8. 28. 촬영 완료",
   },
   {
     name: "아델라인스냅",

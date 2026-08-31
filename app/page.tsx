@@ -361,7 +361,7 @@ export default function Home() {
           </div>
 
           <div className="studio-prep">
-            <h3>촬영 전 준비</h3>
+            <h3>촬영 준비 완료</h3>
             <div className="studio-prep-list">
               {studioPrep.map((prep) => (
                 <article className="studio-prep-row" key={prep.audience}>

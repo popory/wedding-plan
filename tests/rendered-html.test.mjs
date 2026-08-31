@@ -33,7 +33,7 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.match(html, /class="overview"/);
   assert.match(html, /class="category-grid"/);
   assert.match(html, /class="vendor-grid"/);
-  assert.match(html, /8월 12일/);
+  assert.match(html, /8월 31일/);
   assert.match(html, /950만원/);
   assert.doesNotMatch(html, /7월 29일/);
   assert.doesNotMatch(html, /원규 스튜디오 중도금 30만원 입금/);
@@ -47,8 +47,9 @@ test("결혼 준비 대시보드를 서버 렌더링한다", async () => {
   assert.match(html, /원규 추가비용/);
   assert.match(html, /₩55,000 \/ 1회/);
   assert.match(html, /야간 로드씬/);
-  assert.match(html, /촬영 전 준비/);
-  assert.match(html, /11:45 메이크업 시작/);
+  assert.match(html, /촬영 준비 완료/);
+  assert.match(html, /2026\. 8\. 28\. 촬영 완료/);
+  assert.match(html, /9\/4부터 사진 셀렉 예약/);
   assert.match(html, /깊은 V넥 흰색 반팔티/);
   assert.match(html, /드레스·턱시도 불가/);
   assert.match(html, /30~16일 전 44만원/);
