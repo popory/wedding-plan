@@ -11,7 +11,7 @@
     "build:pages": "next build",
     "sync:sheet": "node scripts/sync-sheet.mjs",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
-    "test": "npm run build && node --test tests/honeymoon-bookings.test.mjs tests/rendered-html.test.mjs",
+    "test": "npm run build && node --test tests/honeymoon-bookings.test.mjs tests/rendered-html.test.mjs tests/sync-sheet.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .worktrees",
     "db:generate": "drizzle-kit generate"
   },
