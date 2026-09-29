@@ -1,3 +1,5 @@
+import type { DashboardLists } from "./data-types";
+
 export const dashboardMetrics = {
   "updatedAt": "2026. 8. 31.",
   "progress": 52,
@@ -14,7 +16,7 @@ export const dashboardMetrics = {
   "furnishingsBudget": 19232000
 };
 
-export const budgetCategories = [
+export const budgetCategories: DashboardLists["budgetCategories"] = [
   {
     "label": "예식장·식사",
     "amount": 24640000,
@@ -62,7 +64,7 @@ export const budgetCategories = [
   }
 ];
 
-export const priorityTasks = [
+export const priorityTasks: DashboardLists["priorityTasks"] = [
   {
     "date": "8월 14일",
     "title": "모바일·종이 청첩장 문구/디자인/수량 확정",
@@ -93,7 +95,7 @@ export const priorityTasks = [
   }
 ];
 
-export const vendors = [
+export const vendors: DashboardLists["vendors"] = [
   {
     "name": "더채플앳 청담",
     "category": "예식장",
@@ -136,7 +138,7 @@ export const studioPlan = {
   "url": "https://xn--sm2b21oe3m6la.com/default/"
 };
 
-export const studioExtras = [
+export const studioExtras: DashboardLists["studioExtras"] = [
   {
     "kind": "필수",
     "item": "헬퍼비",
@@ -195,7 +197,7 @@ export const studioExtras = [
   }
 ];
 
-export const studioPrep = [
+export const studioPrep: DashboardLists["studioPrep"] = [
   {
     "audience": "신부",
     "item": "누브라, 한복 촬영 시 발목 긴 흰양말, 제공 사이즈 외 개인 슈즈, 살색 무봉제 속옷",
@@ -222,7 +224,7 @@ export const studioPrep = [
   }
 ];
 
-export const timeline = [
+export const timeline: DashboardLists["timeline"] = [
   {
     "date": "8.14",
     "title": "모바일·종이 청첩장 문구/디자인/수량 확정",
@@ -275,7 +277,7 @@ export const timeline = [
   }
 ];
 
-export const honeymoonBookings = [
+export const honeymoonBookings: DashboardLists["honeymoonBookings"] = [
   {
     "kind": "항공편",
     "date": "2026년 11월 2일",
@@ -328,7 +330,7 @@ export const honeymoonBookings = [
   }
 ];
 
-export const honeymoonRoute = [
+export const honeymoonRoute: DashboardLists["honeymoonRoute"] = [
   {
     "date": "11/2",
     "city": "오키나와",

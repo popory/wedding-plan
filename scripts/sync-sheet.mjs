@@ -95,7 +95,9 @@ function findRow(rows, first, second) {
 }
 
 function serialize(name, value) {
-  return `export const ${name} = ${JSON.stringify(value, null, 2)};\n`;
+  // 시트에 행이 없어도 목록의 원소 타입을 유지한다.
+  const type = Array.isArray(value) ? `: DashboardLists["${name}"]` : "";
+  return `export const ${name}${type} = ${JSON.stringify(value, null, 2)};\n`;
 }
 
 const [checklist, budget, venue, studio, studioExtrasSource, studioPrepSource, suitRentalBudget, suitRentalDetails, snap, video, honeymoon] = await Promise.all([
@@ -252,6 +254,7 @@ const honeymoonRoute = honeymoon
   });
 
 const output = [
+  'import type { DashboardLists } from "./data-types";\n',
   serialize("dashboardMetrics", dashboardMetrics),
   serialize("budgetCategories", budgetCategories),
   serialize("priorityTasks", priorityTasks),
